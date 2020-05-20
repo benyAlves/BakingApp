@@ -1,0 +1,6 @@
+
+esquid:MaximumInheritanceDepth
+"<This class has 6 parents which is greater than 5 authorized.(²Ú±Ž
+„squid:S2637"aParameter 2 to this constructor is marked "androidx.annotation.NonNull" but null could be passed.(Ÿ™ð²ûÿÿÿÿ8ìîšô¢.
+fsquid:S1854"CRemove this useless assignment to local variable "recipeViewModel".(Ÿ™ð²ûÿÿÿÿ8ìîšô¢.
+Wsquid:S1481"4Remove this unused "recipeViewModel" local variable.(Ÿ™ð²ûÿÿÿÿ8ìîšô¢.
