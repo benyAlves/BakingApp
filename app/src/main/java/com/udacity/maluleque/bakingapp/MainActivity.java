@@ -1,20 +1,13 @@
 package com.udacity.maluleque.bakingapp;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Bundle;
 
 import com.udacity.maluleque.bakingapp.fragments.RecipesListFragment;
 import com.udacity.maluleque.bakingapp.model.Recipe;
-import com.udacity.maluleque.bakingapp.viewmodel.RecipeViewModel;
-import com.udacity.maluleque.bakingapp.viewmodel.RecipeViewModelFactory;
-
-import java.util.List;
-
-import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements RecipesListFragment.RecipeShowDetailsListener {
 
@@ -33,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements RecipesListFragme
 
     @Override
     public void onShowRecipeDetails(Recipe recipe) {
-
+        Intent intent = new Intent(this, RecipeStepsActivity.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
     }
 }
