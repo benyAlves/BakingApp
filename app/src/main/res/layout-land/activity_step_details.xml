@@ -70,7 +70,7 @@
 
         <Button
             android:id="@+id/buttonPrevious"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -78,7 +78,7 @@
 
         <Button
             android:id="@+id/buttonNext"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

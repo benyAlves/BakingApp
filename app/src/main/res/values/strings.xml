@@ -6,4 +6,5 @@
     <string name="instructions">Instructions</string>
     <string name="previous_step">Previous Step</string>
     <string name="next_step">Next Step</string>
+    <string name="try_again">Try again</string>
 </resources>
