@@ -29,6 +29,6 @@ public class RecipesAdapterTest {
     @Test
     public void clickItemTest() {
         onView(withText("Hello world!")).check(matches(isDisplayed()));
-        
+
     }
 }

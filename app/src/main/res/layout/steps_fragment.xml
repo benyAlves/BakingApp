@@ -10,20 +10,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/layout_background">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-light"
+            android:text="@string/ingredients"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
 
         <TextView
             android:id="@+id/textViewIngredients"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Bittersweet chocolate (60-70% cacao)\nunsalted butter\ngranulated sugar\nlight brown sugar\nlarge eggs\nvanilla extract\nall purpose flour\ncocoa powder\nsalt\n\u2022 semisweet chocolate chips" />
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="@string/steps"
+        android:textColor="@color/grey_dark"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stepsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:padding="16dp"/>
 
 
 </LinearLayout>
