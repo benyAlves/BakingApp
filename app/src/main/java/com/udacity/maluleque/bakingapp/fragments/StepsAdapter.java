@@ -13,6 +13,9 @@ import com.udacity.maluleque.bakingapp.model.Step;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHolder> {
 
 
@@ -58,11 +61,12 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepViewHold
 
     public class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView textViewDescription;
+        @BindView(R.id.textViewDescription)
+        TextView textViewDescription;
 
         public StepViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewDescription = itemView.findViewById(R.id.textViewDescription);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

@@ -3,12 +3,9 @@ package com.udacity.maluleque.bakingapp.fragments;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.udacity.maluleque.bakingapp.R;
@@ -16,6 +13,9 @@ import com.udacity.maluleque.bakingapp.model.Recipe;
 
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
@@ -50,13 +50,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView textViewName;
-        private final TextView textViewServings;
+        @BindView(R.id.textViewName)
+        TextView textViewName;
+        @BindView(R.id.textViewServings)
+        TextView textViewServings;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.textViewName);
-            textViewServings = itemView.findViewById(R.id.textViewServings);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

@@ -24,15 +24,20 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StepsFragment extends Fragment implements StepsAdapter.StepItemClickListener {
 
     public static final String RECIPE = "recipe";
     public static final String SELECTED_INDEX = "selected-index";
     public static final String STEPS = "steps";
+    @BindView(R.id.textViewIngredients)
     TextView textViewIngredients;
-    ArrayList<Step> steps;
-    private RecyclerView recyclerView;
+    @BindView(R.id.stepsRecyclerView)
+    RecyclerView recyclerView;
     private Recipe recipe;
+    ArrayList<Step> steps;
 
     public StepsFragment() {
     }
@@ -43,9 +48,7 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.steps_fragment, container, false);
-
-        textViewIngredients = view.findViewById(R.id.textViewIngredients);
-        recyclerView = view.findViewById(R.id.stepsRecyclerView);
+        ButterKnife.bind(this, view);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
