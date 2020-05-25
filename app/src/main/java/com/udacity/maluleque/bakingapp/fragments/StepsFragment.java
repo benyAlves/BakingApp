@@ -1,6 +1,6 @@
 package com.udacity.maluleque.bakingapp.fragments;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.udacity.maluleque.bakingapp.R;
-import com.udacity.maluleque.bakingapp.StepDetailsActivity;
+import com.udacity.maluleque.bakingapp.SharedPreferences;
 import com.udacity.maluleque.bakingapp.model.Ingredient;
 import com.udacity.maluleque.bakingapp.model.Recipe;
 import com.udacity.maluleque.bakingapp.model.Step;
+import com.udacity.maluleque.bakingapp.widget.RecipeViewService;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -32,6 +33,7 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
     public static final String RECIPE = "recipe";
     public static final String SELECTED_INDEX = "selected-index";
     public static final String STEPS = "steps";
+    StepDetailsListener stepDetailsListener;
     @BindView(R.id.textViewIngredients)
     TextView textViewIngredients;
     @BindView(R.id.stepsRecyclerView)
@@ -59,6 +61,7 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
             showIngredients(recipe.getIngredients());
             steps = new ArrayList<>(recipe.getSteps());
             showSteps();
+
         }
 
         return view;
@@ -84,14 +87,28 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
                     .append(ingredient.getIngredient());
         }
         textViewIngredients.setText(builder.toString());
+
+        SharedPreferences.getInstance(getContext());
+        SharedPreferences.addLastViewRecipe(recipe.getName(), builder.toString());
+        RecipeViewService.startActionUpdateViewRecipe(getContext());
     }
 
     @Override
     public void onStepItemClicked(int index) {
-        Intent intent = new Intent(getContext(), StepDetailsActivity.class);
-        intent.putExtra(SELECTED_INDEX, index);
-        intent.putExtra(STEPS, steps);
-        intent.putExtra(RECIPE, recipe.getName());
-        startActivity(intent);
+        stepDetailsListener.onShowStepDetails(index);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            stepDetailsListener = (StepDetailsListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement RecipeShowDetailsListener");
+        }
+    }
+
+    public interface StepDetailsListener {
+        void onShowStepDetails(int index);
     }
 }

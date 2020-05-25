@@ -2,12 +2,12 @@ package com.udacity.maluleque.bakingapp;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.exoplayer2.ExoPlayer;
-import com.udacity.maluleque.bakingapp.fragments.StepDetailsFragment;
+import com.udacity.maluleque.bakingapp.fragments.MediaFragment;
 import com.udacity.maluleque.bakingapp.fragments.StepsFragment;
 import com.udacity.maluleque.bakingapp.model.Step;
 
@@ -16,17 +16,23 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.udacity.maluleque.bakingapp.fragments.MediaFragment.THUMBNAIL_URL;
+import static com.udacity.maluleque.bakingapp.fragments.MediaFragment.VIDEO_URL;
+
 public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer.EventListener{
 
-    public static final String STEP = "step";
+    public static final String SELECTED_POSITION = "selected-position";
+    public static final String STEP = "selected-step";
     private ArrayList<Step> steps;
     private int selectedIndex;
+    @BindView(R.id.textViewInstructions)
+    TextView textViewInstructions;
     @BindView(R.id.buttonNext)
     Button buttonNext;
     @BindView(R.id.buttonPrevious)
     Button buttonPrevious;
 
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +58,34 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
                 populateDetails();
             });
 
-            populateDetails();
+            if (savedInstanceState == null) {
+
+                initVideoFragment(steps.get(selectedIndex));
+            }
+            updateView(steps.get(selectedIndex));
 
         }
 
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SELECTED_POSITION, selectedIndex);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        selectedIndex = savedInstanceState.getInt(SELECTED_POSITION);
+        populateDetails();
+    }
+
     private void populateDetails() {
         Step step = steps.get(selectedIndex);
         updateView(step);
+        initVideoFragment(step);
 
         if(selectedIndex == 0){
             buttonPrevious.setEnabled(false);
@@ -78,16 +102,26 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
 
     private void updateView(Step step) {
 
-        StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(STEP, step);
-        stepDetailsFragment.setArguments(args);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.step_details_container, stepDetailsFragment)
-                .commit();
+        textViewInstructions.setText(step.getDescription());
     }
 
+
+    public void initVideoFragment(Step step) {
+
+        String videoUrl = step.getVideoURL();
+        String thumbnailUrl = step.getThumbnailURL();
+
+        MediaFragment videoFragment = new MediaFragment();
+
+        Bundle args = new Bundle();
+        args.putString(THUMBNAIL_URL, thumbnailUrl);
+        args.putString(VIDEO_URL, videoUrl);
+
+        videoFragment.setArguments(args);
+
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.step_media, videoFragment)
+                .commit();
+    }
 }

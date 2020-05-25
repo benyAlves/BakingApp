@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "com.udacity.maluleque.bakingapp"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -40,10 +40,23 @@ dependencies {
 
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
+
+
+
+    androidTestImplementation ('androidx.test.espresso:espresso-contrib:3.2.0'){
+        exclude group: 'androidx.legacy', module: 'legacy-support-core-utils'
+        exclude group: 'androidx.documentfile', module: 'documentfile'
+        exclude group: 'androidx.localbroadcastmanager', module: 'localbroadcastmanager'
+        exclude group: 'androidx.print', module: 'print'
+        exclude module: 'recyclerview'
+    }
+
+
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
 }

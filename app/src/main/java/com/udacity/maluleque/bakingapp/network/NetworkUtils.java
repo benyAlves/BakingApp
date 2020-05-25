@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 
 public class NetworkUtils {
     /*
@@ -15,7 +16,15 @@ public class NetworkUtils {
     public static boolean hasInternetConnection(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        Network netInfo = cm.getActiveNetwork();
+        Network netInfo = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            netInfo = cm.getActiveNetwork();
+        } else {
+            NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+            return activeNetworkInfo != null;
+        }
+
+
 
         if (netInfo == null) {
             return false;
