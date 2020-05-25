@@ -31,7 +31,6 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
     Button buttonNext;
     @BindView(R.id.buttonPrevious)
     Button buttonPrevious;
-    private Step selectedStep;
 
 
     @Override
@@ -81,8 +80,6 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         selectedIndex = savedInstanceState.getInt(SELECTED_POSITION);
-        selectedStep = savedInstanceState.getParcelable(STEP);
-        //populateDetails(selectedStep);
     }
 
     private void populateDetails(Step step) {
