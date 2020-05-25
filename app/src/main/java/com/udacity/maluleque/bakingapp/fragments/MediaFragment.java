@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -21,11 +24,13 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 import com.udacity.maluleque.bakingapp.R;
+import com.udacity.maluleque.bakingapp.network.NetworkUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
-public class MediaFragment extends Fragment {
+public class MediaFragment extends Fragment implements Player.EventListener {
 
 
     public static final String THUMBNAIL_URL = "thumbnail-url";
@@ -34,6 +39,7 @@ public class MediaFragment extends Fragment {
     public static final String KEY_POSITION = "playback-position";
     public static final String KEY_INDEX = "current-window";
     public static final String KEY_URL = "video-url-key";
+    private static final String TAG = "MediaFragment";
     @BindView(R.id.playerView)
     PlayerView playerView;
     @BindView(R.id.imageView)
@@ -94,9 +100,20 @@ public class MediaFragment extends Fragment {
 
             } else {
 
-                Picasso.get()
-                        .load(thumbnailUrl)
-                        .into(imageView);
+                if (thumbnailUrl.endsWith(".mp4")) {
+
+                    videoUri = Uri.parse(videoUrl);
+
+                } else {
+
+                    playerView.setVisibility(View.GONE);
+                    imageView.setVisibility(View.VISIBLE);
+
+                    Picasso.get()
+                            .load(thumbnailUrl)
+                            .error(R.drawable.novideo)
+                            .into(imageView);
+                }
             }
         }
     }
@@ -129,21 +146,26 @@ public class MediaFragment extends Fragment {
         }
     }
 
-    public void initExoPlayer(Uri videoUri) {
-        if (mExoPlayer == null) {
+    public void initExoPlayer(final Uri videoUri) {
 
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext());
+        if (NetworkUtils.hasInternetConnection(getContext())) {
+            if (mExoPlayer == null) {
+
+                if (videoUri != null) {
+                    mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext());
+
+                    mExoPlayer.addListener(this);
 
 
-            playerView.setPlayer(mExoPlayer);
+                    playerView.setPlayer(mExoPlayer);
 
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-                    Util.getUserAgent(getActivity(), String.valueOf(R.string.app_name)));
-
-
-            mExoPlayer.prepare(buildMediaSource(videoUri));
-            mExoPlayer.seekTo(currentWindow, playbackPosition);
-            mExoPlayer.setPlayWhenReady(playWhenReady);
+                    mExoPlayer.prepare(buildMediaSource(videoUri));
+                    mExoPlayer.seekTo(currentWindow, playbackPosition);
+                    mExoPlayer.setPlayWhenReady(playWhenReady);
+                }
+            }
+        } else {
+            Toast.makeText(getContext(), getContext().getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -175,5 +197,26 @@ public class MediaFragment extends Fragment {
         if (Util.SDK_INT >= 24) {
             releasePlayer();
         }
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+        switch (error.type) {
+            case ExoPlaybackException.TYPE_SOURCE:
+                Timber.e("TYPE_SOURCE: %s", error.getSourceException().getMessage());
+                break;
+
+            case ExoPlaybackException.TYPE_RENDERER:
+                Timber.e("TYPE_RENDERER: %s", error.getRendererException().getMessage());
+                break;
+
+            case ExoPlaybackException.TYPE_UNEXPECTED:
+                Timber.e("TYPE_UNEXPECTED: %s", error.getUnexpectedException().getMessage());
+                break;
+
+            default:
+                Timber.e("TYPE_OTHER: %s", error.getUnexpectedException().getMessage());
+        }
+        Toast.makeText(getContext(), "Sorry, We cant play this media file now", Toast.LENGTH_SHORT).show();
     }
 }

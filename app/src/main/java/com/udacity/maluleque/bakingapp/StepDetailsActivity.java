@@ -62,6 +62,7 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
 
                 initVideoFragment(steps.get(selectedIndex));
             }
+
             updateView(steps.get(selectedIndex));
 
         }
@@ -81,7 +82,7 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
         super.onRestoreInstanceState(savedInstanceState);
         selectedIndex = savedInstanceState.getInt(SELECTED_POSITION);
         selectedStep = savedInstanceState.getParcelable(STEP);
-        populateDetails(selectedStep);
+        //populateDetails(selectedStep);
     }
 
     private void populateDetails(Step step) {
