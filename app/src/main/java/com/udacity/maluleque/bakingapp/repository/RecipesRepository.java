@@ -1,12 +1,9 @@
 package com.udacity.maluleque.bakingapp.repository;
 
-import android.util.Log;
-
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.udacity.maluleque.bakingapp.model.Recipe;
-import com.udacity.maluleque.bakingapp.network.BakingService;
 import com.udacity.maluleque.bakingapp.network.RetrofitClient;
 
 import java.util.List;
@@ -34,7 +31,6 @@ public class RecipesRepository {
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 Timber.e(t);
-                Log.e("MainActivity", "Error: ", t);
                 mutableLiveData.setValue(null);
             }
         });
