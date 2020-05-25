@@ -31,7 +31,7 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
     Button buttonNext;
     @BindView(R.id.buttonPrevious)
     Button buttonPrevious;
-
+    private Step selectedStep;
 
 
     @Override
@@ -50,12 +50,12 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
 
             buttonNext.setOnClickListener(view -> {
                 selectedIndex = selectedIndex + 1;
-                populateDetails();
+                populateDetails(steps.get(selectedIndex));
             });
 
             buttonPrevious.setOnClickListener(view -> {
                 selectedIndex = selectedIndex - 1;
-                populateDetails();
+                populateDetails(steps.get(selectedIndex));
             });
 
             if (savedInstanceState == null) {
@@ -73,17 +73,18 @@ public class StepDetailsActivity extends AppCompatActivity implements  ExoPlayer
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SELECTED_POSITION, selectedIndex);
+        outState.putParcelable(STEP, steps.get(selectedIndex));
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         selectedIndex = savedInstanceState.getInt(SELECTED_POSITION);
-        populateDetails();
+        selectedStep = savedInstanceState.getParcelable(STEP);
+        populateDetails(selectedStep);
     }
 
-    private void populateDetails() {
-        Step step = steps.get(selectedIndex);
+    private void populateDetails(Step step) {
         updateView(step);
         initVideoFragment(step);
 

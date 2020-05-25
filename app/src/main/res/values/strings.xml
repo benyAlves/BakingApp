@@ -7,4 +7,5 @@
     <string name="previous_step">Previous Step</string>
     <string name="next_step">Next Step</string>
     <string name="try_again">Try again</string>
+    <string name="no_internet_connection_message">Make sure you have internet connection to play media</string>
 </resources>
